@@ -14,3 +14,9 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UserCreateRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+    role: Role
