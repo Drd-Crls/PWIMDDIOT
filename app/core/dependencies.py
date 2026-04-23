@@ -1,9 +1,8 @@
-from typing import Generator
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.core.security import decode_token
+from app.services.token_service import TokenService
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserResponse
 
@@ -15,7 +14,7 @@ async def get_current_user(
     db: Session = Depends(get_db)
 ) -> UserResponse:
     token = credentials.credentials
-    payload = decode_token(token)
+    payload = TokenService.decode_token(token)
     
     if payload is None:
         raise HTTPException(
@@ -42,4 +41,4 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    return UserResponse.from_orm(user)
+    return UserResponse.model_validate(user)

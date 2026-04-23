@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, status
-from sqlalchemy.orm import Session
-from app.database import get_db
 from app.schemas.user import UserResponse, UserCreateRequest
-from app.controllers import user_controller
+from app.controllers.user_controller import UserController
+from app.core.container import get_user_controller
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["users"])
 
-@router.post("/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+
+@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(
     create_user_request: UserCreateRequest,
-    db: Session = Depends(get_db),
+    user_controller: UserController = Depends(get_user_controller),
 ):
-    return user_controller.create_user(create_user_request, db)
+    return user_controller.create_user(create_user_request)
