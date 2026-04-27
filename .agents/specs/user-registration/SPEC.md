@@ -11,7 +11,7 @@ Enable new users to create an account with email, password, name, and assigned r
 3. Store user in database
 4. Return created user details (without password)
 5. Reject duplicate email with 409 Conflict
-6. Validate email format and password strength requirements
+6. Validate email format (password strength enforcement is out of scope for v1)
 
 ### Non-Functional Requirements
 - Passwords hashed with bcrypt (never stored plaintext)
@@ -42,7 +42,7 @@ Content-Type: application/json
 **Validation**:
 - `name` (required, string): 1-255 chars
 - `email` (required, string): valid email format, unique
-- `password` (required, string): minimum 8 chars (inferred)
+- `password` (required, string): any non-empty string; strength not enforced in v1
 - `role` (required, enum): "USER" or "ADMIN"
 
 ### Response Schema (Success - 201 Created)
