@@ -1,6 +1,6 @@
 from dependency_injector import containers, providers
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
+from app.settings.database import SessionLocal
 from app.repositories.user_repository import UserRepository
 from app.repositories.context_repository import ContextRepository
 from app.services.auth_service import AuthService

@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
-from app.database import get_db
+from app.settings.database import get_db
 from app.services.token_service import TokenService
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserResponse
@@ -15,7 +15,7 @@ async def get_current_user(
 ) -> UserResponse:
     token = credentials.credentials
     payload = TokenService.decode_token(token)
-    
+    print(token)
     if payload is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
