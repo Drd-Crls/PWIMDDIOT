@@ -10,6 +10,7 @@
 | User Registration | ✅ Implemented | [user-registration](./user-registration/) | Needs retroactive spec |
 | Get Current User Info | ✅ Implemented | [user-info](./user-info/) | Needs retroactive spec |
 | Authorization (Role-based) | 🟡 Partial | [authorization](./authorization/) | Infrastructure in place, no routes using it yet |
+| Contexts (IoT grouping) | ✅ Implemented | [contexts](./contexts/) | Added feature on 2026-04-28 |
 
 ## Spec Structure
 
