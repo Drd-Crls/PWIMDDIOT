@@ -11,8 +11,8 @@ def create_app() -> FastAPI:
     Base.metadata.create_all(bind=engine)
 
     app = FastAPI(
-        title="FastAPI Auth API",
-        description="FastAPI application with JWT authentication",
+        title="PWIMDDIOT API",
+        description="IoT Device Management API",
         version="1.0.0",
     )
 
