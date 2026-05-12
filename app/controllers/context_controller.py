@@ -3,15 +3,17 @@ from uuid import UUID
 from typing import Optional, List, Tuple
 from app.repositories.context_repository import ContextRepository
 from app.services.context_service import ContextService
+from app.interfaces.services import ContextServiceInterface
 from app.schemas.context import ContextCreateRequest, ContextUpdateRequest
+from app.interfaces.controllers import ContextControllerInterface
 from app.models.context import Context
 
 
-class ContextController:
+class ContextController(ContextControllerInterface):
     def __init__(self, db: Session):
         self.db = db
         self.context_repository = ContextRepository(db)
-        self.context_service = ContextService(self.context_repository)
+        self.context_service: ContextServiceInterface = ContextService(self.context_repository)
 
     def create(self, req: ContextCreateRequest) -> Context:
         return self.context_service.create_context(name=req.name, description=req.description)

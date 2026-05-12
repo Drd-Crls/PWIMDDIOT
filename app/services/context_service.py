@@ -4,9 +4,10 @@ from datetime import datetime
 from app.models.context import Context
 from app.repositories.context_repository import ContextRepositoryInterface
 from app.core.exceptions import ValidationError, NotFoundError
+from app.interfaces.services import ContextServiceInterface
 
 
-class ContextService:
+class ContextService(ContextServiceInterface):
     def __init__(self, context_repository: ContextRepositoryInterface):
         self.context_repository = context_repository
 

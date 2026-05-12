@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app.models.user import User
-from app.repositories.base_repository import UserRepositoryInterface
+from app.interfaces.repositories import UserRepositoryInterface
 from app.core.exceptions import ConflictError, DatabaseError
 
 

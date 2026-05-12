@@ -7,7 +7,7 @@ app/
 ├── models/              # SQLAlchemy ORM entities (database schema)
 ├── schemas/             # Pydantic request/response DTOs
 ├── repositories/        # Data access layer
-│   ├── base_repository.py   # Abstract interfaces
+│   ├── base_repository.py   # Abstract interfaces (historical; interfaces live in `app/interfaces/repositories.py`)
 │   └── {entity}_repository.py
 ├── services/            # Business logic
 │   ├── {entity}_service.py
@@ -109,7 +109,7 @@ class UserRepositoryInterface(ABC):
 ```
 
 **Rules**:
-- Define interfaces in `base_repository.py`
+- Define interfaces in `app/interfaces/repositories.py`
 - Return type hints (Optional for queries that might fail)
 - Services receive interface type: `def __init__(self, user_repository: UserRepositoryInterface)`
 

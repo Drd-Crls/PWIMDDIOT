@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from starlette.requests import Request
 from fastapi import status
 from app.services.token_service import TokenService
+from app.interfaces.services import TokenServiceInterface
 from app.repositories.user_repository import UserRepository
 from app.settings.database import SessionLocal
 from app.schemas.user import UserResponse
@@ -37,7 +38,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             )
 
         token = parts[1]
-        payload = TokenService.decode_token(token)
+        token_service: TokenServiceInterface = TokenService()
+        payload = token_service.decode_token(token)
         print(f"Decoded token payload: {payload}")
         if payload is None:
             return JSONResponse(
