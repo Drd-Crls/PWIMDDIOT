@@ -1,16 +1,18 @@
 from sqlalchemy.orm import Session
 from app.repositories.user_repository import UserRepository
 from app.services.user_service import UserService
+from app.interfaces.services import UserServiceInterface
+from app.interfaces.controllers import UserControllerInterface
 from app.schemas.user import UserCreateRequest
 from app.models.user import User
 
 
-class UserController:
+class UserController(UserControllerInterface):
     
     def __init__(self, db: Session):
         self.db = db
         self.user_repository = UserRepository(db)
-        self.user_service = UserService(self.user_repository)
+        self.user_service: UserServiceInterface = UserService(self.user_repository)
     
     def create_user(self, create_user_request: UserCreateRequest) -> User:
         return self.user_service.create_user(

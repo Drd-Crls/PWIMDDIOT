@@ -1,11 +1,12 @@
 from fastapi import HTTPException, status
-from app.repositories.base_repository import UserRepositoryInterface
+from app.interfaces.repositories import UserRepositoryInterface
 from app.services.token_service import TokenService
 from app.core.security import verify_password
 from app.schemas.auth import TokenResponse
+from app.interfaces.services import AuthServiceInterface
 
 
-class AuthService:
+class AuthService(AuthServiceInterface):
     
     def __init__(self, user_repository: UserRepositoryInterface):
         self.user_repository = user_repository

@@ -4,23 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app.models.context import Context
 from app.core.exceptions import DatabaseError, NotFoundError
-
-
-class ContextRepositoryInterface:
-    def get_by_id(self, context_id: UUID) -> Optional[Context]:
-        raise NotImplementedError()
-
-    def list(self, offset: int, limit: int, name_filter: Optional[str] = None) -> Tuple[List[Context], int]:
-        raise NotImplementedError()
-
-    def create(self, context: Context) -> Context:
-        raise NotImplementedError()
-
-    def update(self, context: Context) -> Context:
-        raise NotImplementedError()
-
-    def delete(self, context: Context) -> None:
-        raise NotImplementedError()
+from app.interfaces.repositories import ContextRepositoryInterface
 
 
 class ContextRepository(ContextRepositoryInterface):
