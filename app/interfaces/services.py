@@ -1,0 +1,36 @@
+from __future__ import annotations
+from typing import Protocol, Optional, Tuple
+from uuid import UUID
+from datetime import timedelta
+
+from app.schemas.auth import TokenResponse
+from app.models.context import Context
+from app.models.user import User
+
+
+class TokenServiceInterface(Protocol):
+    @staticmethod
+    def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str: ...
+
+    @staticmethod
+    def decode_token(token: str) -> Optional[dict]: ...
+
+
+class AuthServiceInterface(Protocol):
+    def login(self, email: str, password: str) -> TokenResponse: ...
+
+
+class UserServiceInterface(Protocol):
+    def create_user(self, email: str, password: str, role: str, name: str) -> User: ...
+
+
+class ContextServiceInterface(Protocol):
+    def create_context(self, name: str, description: Optional[str] = None) -> Context: ...
+
+    def list_contexts(self, page: int = 1, limit: int = 10, name: Optional[str] = None) -> Tuple[list, int]: ...
+
+    def get_context(self, context_id: UUID) -> Context: ...
+
+    def update_context(self, context_id: UUID, name: Optional[str] = None, description: Optional[str] = None) -> Context: ...
+
+    def delete_context(self, context_id: UUID) -> None: ...
