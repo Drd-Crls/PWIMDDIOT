@@ -2,6 +2,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.responses import JSONResponse
 from starlette.requests import Request
 from fastapi import status
+from uuid import UUID
 from app.services.token_service import TokenService
 from app.interfaces.services import TokenServiceInterface
 from app.repositories.user_repository import UserRepository
@@ -49,6 +50,15 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
         user_id = payload.get("sub")
         if not user_id:
+            return JSONResponse(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                content={"detail": "Invalid token payload"},
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        try:
+            user_id = UUID(str(user_id))
+        except (TypeError, ValueError):
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content={"detail": "Invalid token payload"},
