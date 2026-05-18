@@ -1,9 +1,8 @@
 from typing import Optional, Tuple
 from uuid import UUID
-from datetime import datetime
 from app.models.context import Context
-from app.repositories.context_repository import ContextRepositoryInterface
 from app.core.exceptions import ValidationError, NotFoundError
+from app.interfaces.repositories import ContextRepositoryInterface
 from app.interfaces.services import ContextServiceInterface
 
 
