@@ -211,7 +211,8 @@ DELETE /contexts/{id}
 - ✓ UUID for context ID (hard to enumerate)
 - ✓ Name trimmed (prevents whitespace-only names)
 - ✓ Pagination limits enforced (1-100 items max)
-- ⏳ No authentication/authorization on endpoints (future: require login + role check)
+- ✓ Authentication required on `/contexts` endpoints via global `AuthMiddleware`; requests without the required auth header return `401 Unauthorized`
+- ⏳ Authorization/role checks are not yet defined beyond authentication (future: require role-based access as needed)
 - ⏳ No audit logging (future: log create/update/delete events)
 - ⏳ No soft delete (future: add is_deleted flag for data retention)
 
