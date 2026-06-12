@@ -3,25 +3,31 @@ from sqlalchemy.orm import Session
 from app.settings.database import SessionLocal
 from app.repositories.user_repository import UserRepository
 from app.repositories.context_repository import ContextRepository
+from app.repositories.device_repository import DeviceRepository
 from app.services.auth_service import AuthService
 from app.services.user_service import UserService
 from app.services.context_service import ContextService
+from app.services.device_service import DeviceService
 from app.controllers.auth_controller import AuthController
 from app.controllers.user_controller import UserController
 from app.controllers.context_controller import ContextController
+from app.controllers.device_controller import DeviceController
 from app.interfaces.services import (
     AuthServiceInterface,
     UserServiceInterface,
     ContextServiceInterface,
+    DeviceServiceInterface,
 )
 from app.interfaces.controllers import (
     AuthControllerInterface,
     UserControllerInterface,
     ContextControllerInterface,
+    DeviceControllerInterface,
 )
 from app.interfaces.repositories import (
     UserRepositoryInterface,
     ContextRepositoryInterface,
+    DeviceRepositoryInterface,
 )
 
 
@@ -39,6 +45,11 @@ class Container(containers.DeclarativeContainer):
         db=db
     )  # provides ContextRepository (implements ContextRepositoryInterface)
     
+    device_repository = providers.Factory(
+        DeviceRepository,
+        db=db
+    )  # provides DeviceRepository (implements DeviceRepositoryInterface)
+    
     auth_service = providers.Factory(
         AuthService,
         user_repository=user_repository
@@ -54,6 +65,11 @@ class Container(containers.DeclarativeContainer):
         context_repository=context_repository
     )  # implements ContextServiceInterface
     
+    device_service = providers.Factory(
+        DeviceService,
+        device_repository=device_repository
+    )  # implements DeviceServiceInterface
+    
     auth_controller = providers.Factory(
         AuthController,
         db=db
@@ -68,6 +84,11 @@ class Container(containers.DeclarativeContainer):
         ContextController,
         db=db
     )  # implements ContextControllerInterface
+    
+    device_controller = providers.Factory(
+        DeviceController,
+        db=db
+    )  # implements DeviceControllerInterface
 
 
 container = Container()
@@ -83,3 +104,7 @@ def get_user_controller() -> UserControllerInterface:
 
 def get_context_controller() -> ContextControllerInterface:
     return container.context_controller()
+
+
+def get_device_controller() -> DeviceControllerInterface:
+    return container.device_controller()
