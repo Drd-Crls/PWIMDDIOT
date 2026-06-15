@@ -40,7 +40,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         token = parts[1]
         token_service: TokenServiceInterface = TokenService()
         payload = token_service.decode_token(token)
-        print(f"Decoded token payload: {payload}")
         if payload is None:
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,

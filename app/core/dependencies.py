@@ -17,7 +17,6 @@ async def get_current_user(
     token = credentials.credentials
     token_service: TokenServiceInterface = TokenService()
     payload = token_service.decode_token(token)
-    print(token)
     if payload is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

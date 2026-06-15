@@ -4,30 +4,36 @@ from app.settings.database import SessionLocal
 from app.repositories.user_repository import UserRepository
 from app.repositories.context_repository import ContextRepository
 from app.repositories.device_repository import DeviceRepository
+from app.repositories.sensor_repository import SensorRepository
 from app.services.auth_service import AuthService
 from app.services.user_service import UserService
 from app.services.context_service import ContextService
 from app.services.device_service import DeviceService
+from app.services.sensor_service import SensorService
 from app.controllers.auth_controller import AuthController
 from app.controllers.user_controller import UserController
 from app.controllers.context_controller import ContextController
 from app.controllers.device_controller import DeviceController
+from app.controllers.sensor_controller import SensorController
 from app.interfaces.services import (
     AuthServiceInterface,
     UserServiceInterface,
     ContextServiceInterface,
     DeviceServiceInterface,
+    SensorServiceInterface,
 )
 from app.interfaces.controllers import (
     AuthControllerInterface,
     UserControllerInterface,
     ContextControllerInterface,
     DeviceControllerInterface,
+    SensorControllerInterface,
 )
 from app.interfaces.repositories import (
     UserRepositoryInterface,
     ContextRepositoryInterface,
     DeviceRepositoryInterface,
+    SensorRepositoryInterface,
 )
 
 
@@ -49,7 +55,12 @@ class Container(containers.DeclarativeContainer):
         DeviceRepository,
         db=db
     )  # provides DeviceRepository (implements DeviceRepositoryInterface)
-    
+
+    sensor_repository = providers.Factory(
+        SensorRepository,
+        db=db
+    )  # provides SensorRepository (implements SensorRepositoryInterface)
+
     auth_service = providers.Factory(
         AuthService,
         user_repository=user_repository
@@ -69,7 +80,13 @@ class Container(containers.DeclarativeContainer):
         DeviceService,
         device_repository=device_repository
     )  # implements DeviceServiceInterface
-    
+
+    sensor_service = providers.Factory(
+        SensorService,
+        sensor_repository=sensor_repository,
+        device_repository=device_repository
+    )  # implements SensorServiceInterface
+
     auth_controller = providers.Factory(
         AuthController,
         db=db
@@ -90,6 +107,11 @@ class Container(containers.DeclarativeContainer):
         db=db
     )  # implements DeviceControllerInterface
 
+    sensor_controller = providers.Factory(
+        SensorController,
+        db=db
+    )  # implements SensorControllerInterface
+
 
 container = Container()
 
@@ -108,3 +130,7 @@ def get_context_controller() -> ContextControllerInterface:
 
 def get_device_controller() -> DeviceControllerInterface:
     return container.device_controller()
+
+
+def get_sensor_controller() -> SensorControllerInterface:
+    return container.sensor_controller()

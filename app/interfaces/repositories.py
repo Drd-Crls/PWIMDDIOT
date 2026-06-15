@@ -6,6 +6,7 @@ from uuid import UUID
 from app.models.user import User
 from app.models.context import Context
 from app.models.device import Device
+from app.models.sensor import Sensor
 
 
 class UserRepositoryInterface(ABC):
@@ -90,4 +91,36 @@ class DeviceRepositoryInterface(ABC):
     @abstractmethod
     def delete(self, device: Device) -> None:
         """Delete a device. Raises DatabaseError on FK constraint violations."""
+        pass
+
+
+class SensorRepositoryInterface(ABC):
+    @abstractmethod
+    def get_by_id(self, sensor_id: UUID) -> Optional[Sensor]:
+        pass
+
+    @abstractmethod
+    def list(
+        self,
+        offset: int,
+        limit: int,
+        name_filter: Optional[str] = None,
+        type_filter: Optional[str] = None,
+        unit_filter: Optional[str] = None,
+        device_id_filter: Optional[UUID] = None,
+        sort_by: str = "created_at",
+        sort_order: str = "desc",
+    ) -> Tuple[List[Sensor], int]:
+        pass
+
+    @abstractmethod
+    def create(self, sensor: Sensor) -> Sensor:
+        pass
+
+    @abstractmethod
+    def update(self, sensor: Sensor) -> Sensor:
+        pass
+
+    @abstractmethod
+    def delete(self, sensor: Sensor) -> None:
         pass

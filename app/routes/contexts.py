@@ -14,7 +14,7 @@ router = APIRouter(prefix="/contexts", tags=["contexts"])
 
 
 @router.post("", response_model=ContextResponse, status_code=status.HTTP_201_CREATED)
-async def create_context(
+def create_context(
     create_request: ContextCreateRequest,
     controller: ContextController = Depends(get_context_controller),
 ):
@@ -22,7 +22,7 @@ async def create_context(
 
 
 @router.get("", response_model=ContextListResponse, status_code=status.HTTP_200_OK)
-async def list_contexts(
+def list_contexts(
     page: int = 1,
     limit: int = 10,
     name: Optional[str] = None,
@@ -33,7 +33,7 @@ async def list_contexts(
 
 
 @router.get("/{context_id}", response_model=ContextResponse, status_code=status.HTTP_200_OK)
-async def get_context(
+def get_context(
     context_id: UUID,
     controller: ContextController = Depends(get_context_controller),
 ):
@@ -41,7 +41,7 @@ async def get_context(
 
 
 @router.put("/{context_id}", response_model=ContextResponse, status_code=status.HTTP_200_OK)
-async def update_context(
+def update_context(
     context_id: UUID,
     update_request: ContextUpdateRequest,
     controller: ContextController = Depends(get_context_controller),
@@ -50,7 +50,7 @@ async def update_context(
 
 
 @router.delete("/{context_id}", status_code=status.HTTP_200_OK)
-async def delete_context(
+def delete_context(
     context_id: UUID,
     controller: ContextController = Depends(get_context_controller),
 ):

@@ -7,7 +7,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_user(
+def create_user(
     create_user_request: UserCreateRequest,
     user_controller: UserController = Depends(get_user_controller),
 ):
