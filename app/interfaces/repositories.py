@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import Optional, List, Tuple
 from uuid import UUID
 
@@ -7,6 +8,8 @@ from app.models.user import User
 from app.models.context import Context
 from app.models.device import Device
 from app.models.sensor import Sensor
+from app.models.ingest import Ingest
+from app.models.api_key import ApiKey
 
 
 class UserRepositoryInterface(ABC):
@@ -123,4 +126,57 @@ class SensorRepositoryInterface(ABC):
 
     @abstractmethod
     def delete(self, sensor: Sensor) -> None:
+        pass
+
+
+class IngestRepositoryInterface(ABC):
+    @abstractmethod
+    def get_by_id(self, ingest_id: UUID) -> Optional[Ingest]:
+        pass
+
+    @abstractmethod
+    def list(
+        self,
+        offset: int,
+        limit: int,
+        sensor_id_filter: Optional[UUID] = None,
+        created_from: Optional[datetime] = None,
+        created_to: Optional[datetime] = None,
+        sort_by: str = "created_at",
+        sort_order: str = "desc",
+    ) -> Tuple[List[Ingest], int]:
+        pass
+
+    @abstractmethod
+    def create(self, ingest: Ingest) -> Ingest:
+        pass
+
+    @abstractmethod
+    def update(self, ingest: Ingest) -> Ingest:
+        pass
+
+    @abstractmethod
+    def delete(self, ingest: Ingest) -> None:
+        pass
+
+
+class ApiKeyRepositoryInterface(ABC):
+    @abstractmethod
+    def get_by_id(self, api_key_id: UUID) -> Optional[ApiKey]:
+        pass
+
+    @abstractmethod
+    def get_by_hash(self, key_hash: str) -> Optional[ApiKey]:
+        pass
+
+    @abstractmethod
+    def list_by_user(self, user_id: UUID) -> List[ApiKey]:
+        pass
+
+    @abstractmethod
+    def create(self, api_key: ApiKey) -> ApiKey:
+        pass
+
+    @abstractmethod
+    def update(self, api_key: ApiKey) -> ApiKey:
         pass

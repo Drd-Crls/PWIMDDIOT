@@ -25,6 +25,11 @@ class UnauthorizedError(AppException):
         super().__init__(message, status_code=401)
 
 
+class ForbiddenError(AppException):
+    def __init__(self, message: str = "Permission denied"):
+        super().__init__(message, status_code=403)
+
+
 class DatabaseError(AppException):
     def __init__(self, message: str = "Database error"):
         super().__init__(message, status_code=500)

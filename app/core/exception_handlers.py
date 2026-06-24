@@ -7,6 +7,7 @@ from app.core.exceptions import (
     ConflictError,
     NotFoundError,
     UnauthorizedError,
+    ForbiddenError,
     DatabaseError
 )
 
@@ -66,6 +67,17 @@ async def unauthorized_error_handler(request: Request, exc: UnauthorizedError):
     )
 
 
+async def forbidden_error_handler(request: Request, exc: ForbiddenError):
+    return JSONResponse(
+        status_code=status.HTTP_403_FORBIDDEN,
+        content={
+            "detail": exc.message,
+            "status": 403,
+            "error_type": "forbidden_error"
+        }
+    )
+
+
 async def database_error_handler(request: Request, exc: DatabaseError):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -83,5 +95,6 @@ EXCEPTION_HANDLERS = {
     ConflictError: conflict_error_handler,
     NotFoundError: not_found_error_handler,
     UnauthorizedError: unauthorized_error_handler,
+    ForbiddenError: forbidden_error_handler,
     DatabaseError: database_error_handler,
 }
