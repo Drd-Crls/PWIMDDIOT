@@ -40,7 +40,14 @@ class ApiKeyAuthMiddleware(BaseHTTPMiddleware):
                     content={"detail": exc.message, "status": exc.status_code},
                 )
 
-            user = UserRepository(db).get_by_id(context.user_id)
+            user_repo = UserRepository(db)
+            user = user_repo.get_by_id(context.user_id)
+            if user is None:
+                return JSONResponse(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    content={"detail": "User not found"},
+                )
+
             request.state.is_authenticated = True
             request.state.auth_type = "api_key"
             request.state.api_key_context = context
