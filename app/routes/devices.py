@@ -20,7 +20,7 @@ router = APIRouter(prefix="/devices", tags=["devices"])
     summary="Create Device",
     description="Create a new IoT device in the system"
 )
-async def create_device(
+def create_device(
     create_request: DeviceCreateRequest,
     controller: DeviceController = Depends(get_device_controller),
 ):
@@ -49,7 +49,7 @@ async def create_device(
     summary="List Devices",
     description="List all devices with pagination, filtering, and sorting"
 )
-async def list_devices(
+def list_devices(
     page: int = 1,
     limit: int = 10,
     name: Optional[str] = None,
@@ -95,7 +95,7 @@ async def list_devices(
     summary="Get Device",
     description="Get a specific device by ID"
 )
-async def get_device(
+def get_device(
     device_id: UUID,
     controller: DeviceController = Depends(get_device_controller),
 ):
@@ -114,7 +114,7 @@ async def get_device(
     summary="Update Device",
     description="Update device fields"
 )
-async def update_device(
+def update_device(
     device_id: UUID,
     update_request: DeviceUpdateRequest,
     controller: DeviceController = Depends(get_device_controller),
@@ -139,7 +139,7 @@ async def update_device(
     summary="Delete Device",
     description="Delete a device from the system"
 )
-async def delete_device(
+def delete_device(
     device_id: UUID,
     controller: DeviceController = Depends(get_device_controller),
 ):

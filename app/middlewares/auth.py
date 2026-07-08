@@ -20,6 +20,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if path in EXEMPT_PATHS or path.startswith(EXEMPT_PREFIXES):
             return await call_next(request)
 
+        if getattr(request.state, "is_authenticated", False):
+            return await call_next(request)
+
         auth_header = request.headers.get("authorization")
 
         if not auth_header:
@@ -40,7 +43,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         token = parts[1]
         token_service: TokenServiceInterface = TokenService()
         payload = token_service.decode_token(token)
-        print(f"Decoded token payload: {payload}")
         if payload is None:
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -69,6 +71,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
             try:
                 request.state.user = UserResponse.model_validate(user)
+                request.state.is_authenticated = True
+                request.state.auth_type = "jwt"
             except Exception:
                 request.state.user = None
         finally:

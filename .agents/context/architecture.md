@@ -184,4 +184,7 @@ Session closed in finally block (guaranteed)
 | **Login** | POST `/auth/login` | AuthController.login() | AuthService.login() | UserRepository.get_by_email() |
 | **Get Current User** | GET `/auth/me` | (dependency handler) | - | UserRepository.get_by_id() |
 | **Register User** | POST `/users` | UserController.create_user() | UserService.create_user() | UserRepository.create() |
+| **Contexts CRUD** | `/contexts` | ContextController | ContextService | ContextRepository |
+| **Devices CRUD** | `/devices` | DeviceController | DeviceService | DeviceRepository |
+| **Sensors CRUD** | `/sensors` | SensorController | SensorService | SensorRepository (+ DeviceRepository for FK validation) |
 

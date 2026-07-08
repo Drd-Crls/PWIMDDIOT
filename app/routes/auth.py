@@ -9,7 +9,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)
-async def login(
+def login(
     login_request: LoginRequest,
     auth_controller: AuthController = Depends(get_auth_controller),
 ):
@@ -17,7 +17,7 @@ async def login(
 
 
 @router.get("/me", response_model=UserResponse, status_code=status.HTTP_200_OK)
-async def get_current_user_info(
+def get_current_user_info(
     current_user: UserResponse = Depends(get_current_user),
 ):
     return current_user
