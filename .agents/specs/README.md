@@ -10,6 +10,10 @@
 | User Registration | ✅ Implemented | [user-registration](./user-registration/) | Needs retroactive spec |
 | Get Current User Info | ✅ Implemented | [user-info](./user-info/) | Needs retroactive spec |
 | Authorization (Role-based) | 🟡 Partial | [authorization](./authorization/) | Infrastructure in place, no routes using it yet |
+| Contexts (IoT grouping) | ✅ Implemented | [contexts](./contexts/) | Added feature on 2026-04-28 |
+| Devices (IoT hardware) | ✅ Implemented | [device](./device/) | CRUD with FK to Context/User |
+| Sensors (measurement channels) | ✅ Implemented | [sensor](./sensor/) | CRUD with FK to Device, added 2026-06-11 |
+| App Initialization | ✅ Implemented | [infrastructure](./) | Centralized app creation in `app/settings/app.py` |
 
 ## Spec Structure
 
@@ -49,4 +53,4 @@ Each feature gets a folder with:
 
 ---
 
-**Last Updated**: 2026-04-23
+**Last Updated**: 2026-06-11

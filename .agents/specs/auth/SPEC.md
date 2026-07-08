@@ -75,6 +75,14 @@ Content-Type: application/json
 - ✓ Token expiry enforced at decode time
 - ✓ Email queries use indexed column
 
+## Middleware
+
+- A global authentication middleware is registered in `app.settings.app`.
+- Behavior: for all non-exempt routes, the middleware validates the token using `TokenService.decode_token`, loads the user via `UserRepository`, and attaches a `UserResponse` to `request.state.user` for downstream handlers.
+- Exempt paths: `/auth/*` and documentation endpoints (`/docs`, `/redoc`, `/openapi.json`, `/favicon.ico`).
+- If the header is missing, invalid, or expired on a protected route, middleware returns `401 Unauthorized` before route handlers execute.
+- Authentication routes remain responsible for their own auth logic (for example, `GET /auth/me` still relies on dependency-based user resolution).
+
 ## Edge Cases
 
 | Case | Behavior |

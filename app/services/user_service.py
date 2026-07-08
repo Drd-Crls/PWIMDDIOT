@@ -1,9 +1,10 @@
 from app.models.user import User
-from app.repositories.base_repository import UserRepositoryInterface
+from app.interfaces.repositories import UserRepositoryInterface
 from app.core.security import hash_password
+from app.interfaces.services import UserServiceInterface
 
 
-class UserService:
+class UserService(UserServiceInterface):
      
     def __init__(self, user_repository: UserRepositoryInterface):
         self.user_repository = user_repository

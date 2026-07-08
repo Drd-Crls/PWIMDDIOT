@@ -2,9 +2,10 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from app.core.config import settings
+from app.interfaces.services import TokenServiceInterface
 
 
-class TokenService:
+class TokenService(TokenServiceInterface):
     
     @staticmethod
     def create_access_token(
