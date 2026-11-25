@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.settings.database import Base, engine
+from app.core.logging import configure_logging
 from app.routes.auth import router as auth_router
 from app.routes.enroll import router as enroll_router
 from app.routes.contexts import router as contexts_router
@@ -13,6 +14,8 @@ from app.middlewares.api_key_auth import ApiKeyAuthMiddleware
 
 
 def create_app() -> FastAPI:
+    configure_logging()
+
     Base.metadata.create_all(bind=engine)
 
     app = FastAPI(

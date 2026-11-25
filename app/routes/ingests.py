@@ -1,3 +1,5 @@
+import logging
+import time
 from fastapi import APIRouter, Depends, status
 from typing import Optional
 from uuid import UUID
@@ -10,8 +12,13 @@ from app.schemas.ingest import (
     IngestListResponse,
 )
 from app.core.container import get_ingest_controller
+from app.core.logging import duration_label, now_label
 
 router = APIRouter(prefix="/ingests", tags=["ingests"])
+
+logger = logging.getLogger(__name__)
+
+SEPARATOR = "-" * 70
 
 
 @router.post(
@@ -25,7 +32,43 @@ def create_ingest(
     create_request: IngestCreateRequest,
     controller: IngestController = Depends(get_ingest_controller),
 ):
-    return controller.create(create_request)
+    started_at = time.perf_counter()
+    logger.info(
+        "\n%s\nCOMEÇOU: chegou um pedido para guardar uma nova leitura de sensor."
+        "\n  Horário de início: %s"
+        "\n  Sensor informado:  %s\n%s",
+        SEPARATOR,
+        now_label(),
+        create_request.sensor_id,
+        SEPARATOR,
+    )
+
+    try:
+        created_ingest = controller.create(create_request)
+    except Exception as error:
+        logger.info(
+            "\n%s\nTERMINOU COM ERRO: a leitura não pôde ser guardada."
+            "\n  Horário de término: %s"
+            "\n  Tempo até o erro:   %s"
+            "\n  Motivo:             %s\n%s",
+            SEPARATOR,
+            now_label(),
+            duration_label((time.perf_counter() - started_at) * 1000),
+            error,
+            SEPARATOR,
+        )
+        raise
+
+    logger.info(
+        "\n%s\nTERMINOU: a leitura foi guardada com sucesso."
+        "\n  Horário de término: %s"
+        "\n  Tempo total:        %s\n%s",
+        SEPARATOR,
+        now_label(),
+        duration_label((time.perf_counter() - started_at) * 1000),
+        SEPARATOR,
+    )
+    return created_ingest
 
 
 @router.get(
